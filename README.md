@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/tilayealemu/sparkmllite.svg?branch=master)](https://travis-ci.org/tilayealemu/sparkmllite)
+
 SparkMLLite solves a specific problem in using Spark MLlib
 models for prediction.
 
