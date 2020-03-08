@@ -1,0 +1,15 @@
+language: scala
+
+scala:
+  - 2.11.8
+
+cache:
+  directories:
+    - $HOME/.m2
+    - $HOME/.ivy2
+
+services:
+  - docker
+
+script:
+  - sbt clean compile test publish
