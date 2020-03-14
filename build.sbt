@@ -5,7 +5,7 @@ val sparkVersion = "2.4.4"
 
 lazy val commonSettings = Seq(
   organization := "com.ainsightful",
-  version := "1.0.1",
+  version := "1.0.2",
   scalaVersion := "2.11.12",
   resolvers += Resolver.mavenLocal,
   publishTo := {
@@ -71,7 +71,7 @@ lazy val `sample` = (project in file("sample"))
     publishArtifact := false,
     commonSettings,
     libraryDependencies ++= Seq(
-      "com.ainsightful" %% "sparkml-lite" % "1.0.0",
+      "com.ainsightful" %% "sparkml-lite" % "1.0.2",
       "org.apache.spark" %% "spark-streaming" % sparkVersion,
       "org.apache.spark" %% "spark-sql" % sparkVersion
     )

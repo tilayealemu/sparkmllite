@@ -32,13 +32,14 @@ you can use the provided `LRMLite` wrapper for LogisticRegressionModel.
 
 Sbt:
 
-    libraryDependencies += "com.ainsightful" %% "sparkmllite" % "1.0.0"
+    libraryDependencies += "com.ainsightful" %% "sparkml-lite" % "1.0.1"
 
 Maven:
+
     <dependency>
         <groupId>com.ainsightful</groupId>
-        <artifactId>sparkmllite</artifactId>
-        <version>1.0.0</version>
+        <artifactId>sparkml-lite</artifactId>
+        <version>1.0.1</version>
     </dependency>
 
 
