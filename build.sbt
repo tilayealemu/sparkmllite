@@ -1,22 +1,59 @@
+import sbt.Keys.{organization, publishTo}
+import sbt.url
+
 val sparkVersion = "2.4.4"
 
 lazy val commonSettings = Seq(
   organization := "com.ainsightful",
   version := "1.0.0",
   scalaVersion := "2.11.12",
-  resolvers += Resolver.mavenLocal
+  resolvers += Resolver.mavenLocal,
+  publishTo := {
+    if (isSnapshot.value) Some(Opts.resolver.sonatypeSnapshots)
+    else Some(Opts.resolver.sonatypeStaging)
+  },
+  organization := "com.ainsightful",
+  organizationName := "com.ainsightful",
+  organizationHomepage := Some(url("http://ainsightful.com/")),
+
+  scmInfo := Some(
+    ScmInfo(
+      url("https://github.com/tilayealemu/sparkmllite"),
+      "scm:git@github.com:tilayealemu/sparkmllite.git"
+    )
+  ),
+  developers := List(
+    Developer(
+      id = "Tilaye Yismaw Alemu",
+      name = "Tilaye Yismaw Alemu",
+      email = "tilaye@gmail.com",
+      url = url("http://ainsightful.com")
+    )
+  ),
+
+  description := "Spark MLlib helper library",
+  licenses := List("Apache 2" -> new URL("http://www.apache.org/licenses/LICENSE-2.0.txt")),
+  homepage := Some(url("https://github.com/tilayealemu/sparkmllite")),
+
+  // Remove all additional repository other than Maven Central from POM
+  pomIncludeRepository := { _ => false },
+  publishTo := {
+    if (isSnapshot.value) Some(Opts.resolver.sonatypeSnapshots)
+    else Some(Opts.resolver.sonatypeStaging)
+  },
+  publishMavenStyle := true
 )
 
 lazy val disablePublish = Seq(
-  publish := (),
-  publishLocal := (),
-  publishArtifact := false
+  publishArtifact := false,
+  publishTo := Some(Resolver.file("Dummy", file("dummy")))
 )
 
 lazy val `sparkml-lite` = (project in file("sparkml-lite"))
   .settings(
     name := "com.ainsightful.sparkml-lite",
     commonSettings,
+    publishArtifact := true,
     libraryDependencies ++= Seq(
       "org.apache.spark" %% "spark-core" % sparkVersion,
       "org.apache.spark" %% "spark-mllib" % sparkVersion,
@@ -32,6 +69,7 @@ lazy val `sample` = (project in file("sample"))
   .settings(
     name := "sample",
     disablePublish,
+    publishArtifact := false,
     commonSettings,
     libraryDependencies ++= Seq(
       "org.apache.spark" %% "spark-streaming" % sparkVersion,
@@ -41,5 +79,4 @@ lazy val `sample` = (project in file("sample"))
 
 lazy val root = (project in file("."))
   .aggregate(`sparkml-lite`, `sample`)
-  .settings(disablePublish :_*)
-
+  .settings(disablePublish: _*)
