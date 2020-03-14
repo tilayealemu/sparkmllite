@@ -66,7 +66,7 @@ use FeatureHasherLite with no need to start a spark session.
 
 See `TrainExample` and `FeatureHasherLiteExample` for working examples.
 
-## Predicting probabilities
+## Raw predictions
 To get LogistRegressionModel predict probabilities:
 
     // get trained model
