@@ -15,5 +15,5 @@ services:
   - docker
 
 script:
-  - sbt clean compile test publish
+  - sbt clean compile test
 

@@ -13,7 +13,7 @@ object FeatureHahserLiteExample {
     val hashSize = Common.hashSize
 
     // load persisted model
-    val lrModel2 = deserialize("lr.model").asInstanceOf[LogisticRegressionModel]
+    val lrModel = deserialize("lr.model").asInstanceOf[LogisticRegressionModel]
 
     // create hasher, schema must be exactly as it was used for training
     val hasher = new FeatureHasherLite(predictSchema, hashSize)
@@ -23,7 +23,7 @@ object FeatureHahserLiteExample {
     val featureVector = hasher.hash(feature)
 
     // Make prediction - will output a value between 0 and 1
-    val prediction = lrModel2.predict(featureVector)
+    val prediction = lrModel.predict(featureVector)
     println(s"Predicted value: $prediction")
   }
 

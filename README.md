@@ -1,10 +1,10 @@
 [![Build Status](https://travis-ci.org/tilayealemu/sparkmllite.svg?branch=master)](https://travis-ci.org/tilayealemu/sparkmllite)
 
+#Background
 SparkMLLite solves a specific problem in using Spark MLlib
 models for prediction.
 
-What problems?
-- Usage of Spark MLlib models is dependent on having a Spark Session.
+Usage of Spark MLlib models is dependent on having a Spark Session.
 The first option is to start it locally (spark.master=local). Given 
 spark pulls all sorts of dependencies, adding it as a dependency for 
 making predictions is a bad idea. Also, it takes up un-necessary 
@@ -20,10 +20,61 @@ need to make single predictions, as opposed to offline batch predictions.
 Such serving components can have SLAs of 1 millisecond or less. Creating
 a dataframe for every single call makes this virtually unachievable.
 
-What's the solution?
+##SparkMLLite
 This repo allows you to hash datapoints by giving it a Map instead of
 a dataframe. You can then either pass this to MLlib's model for prediction.
 
-What else is included?
-`LogisticRegressionModel.predict` provides 0 or 1 values based on its learnt
-threshold. If you need the raw scores or probabilities, you can use LRMLite.
+In addition, `LogisticRegressionModel.predict` provides 0 or 1 values based 
+on its learnt threshold. If you need the raw scores or probabilities, 
+you can use the provided `LRMLite` wrapper for LogisticRegressionModel.
+
+#Usage
+
+Sbt:
+
+    libraryDependencies += "com.ainsightful" %% "sparkmllite" % "1.0.0"
+
+Maven:
+    <dependency>
+        <groupId>com.ainsightful</groupId>
+        <artifactId>sparkmllite</artifactId>
+        <version>1.0.0</version>
+    </dependency>
+
+
+## Feature hashing
+
+First use MLlib's [FeatureHasher](https://spark.apache.org/docs/2.4.4/api/java/org/apache/spark/ml/feature/FeatureHasher.html)
+to hash feature values and train your model. Then save your model.
+See `TrainExample` class under sample directory. For prediction,
+use FeatureHasherLite with no need to start a spark session.
+
+    val lrModel = ... // load saved model
+
+    // create hasher, schema must be exactly as it was used for training
+    val hasher = new FeatureHasherLite(predictSchema, hashSize)
+
+    // create sample data-point and hash it
+    val feature = Map("feature1" -> "value1", "feature2" -> 2.0, "feature3" -> 3, "feature4" -> false)
+    val featureVector = hasher.hash(feature)
+
+    // Make prediction
+    val prediction = lrModel.predict(featureVector)
+
+See `TrainExample` and `FeatureHasherLiteExample` for working examples.
+
+## Predicting probabilities
+To get LogistRegressionModel predict probabilities:
+
+    // get trained model
+    val lrModel = ...
+
+
+    // prepare feature vector
+    val input = ...
+    
+    // wrap model
+    val lrModel2 = new LRMWrapper(model)
+    
+    // Get raw prediction. This value should have the raw prediction
+    val prediction = lrModel2.predictRaw(input)

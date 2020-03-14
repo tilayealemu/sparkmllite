@@ -13,7 +13,7 @@ object LRMWrapperExample {
     val hashSize = Common.hashSize
 
     // load persisted model and wrap it
-    val lrModel2 = new LRMWrapper(deserialize("lr.model").asInstanceOf[LogisticRegressionModel])
+    val lrModel = new LRMWrapper(deserialize("lr.model").asInstanceOf[LogisticRegressionModel])
 
     // create hasher, schema must be exactly as it was used for training
     val hasher = new FeatureHasherLite(predictSchema, hashSize)
@@ -23,7 +23,7 @@ object LRMWrapperExample {
     val featureVector = hasher.hash(feature)
 
     // Use LRMLite for raw prediction
-    val prediction = lrModel2.predictRaw(featureVector)
+    val prediction = lrModel.predictRaw(featureVector)
     println(s"Predicted value: $prediction")
   }
 
