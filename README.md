@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/tilayealemu/sparkmllite.svg?branch=master)](https://travis-ci.org/tilayealemu/sparkmllite)
 
-#Background
+# Background
+
 SparkMLLite solves a specific problem in using Spark MLlib
 models for prediction.
 
@@ -20,7 +21,8 @@ need to make single predictions, as opposed to offline batch predictions.
 Such serving components can have SLAs of 1 millisecond or less. Creating
 a dataframe for every single call makes this virtually unachievable.
 
-##SparkMLLite
+## SparkMLLite
+
 This repo allows you to hash datapoints by giving it a Map instead of
 a dataframe. You can then either pass this to MLlib's model for prediction.
 
@@ -28,7 +30,7 @@ In addition, `LogisticRegressionModel.predict` provides 0 or 1 values based
 on its learnt threshold. If you need the raw scores or probabilities, 
 you can use the provided `LRMLite` wrapper for LogisticRegressionModel.
 
-#Usage
+# Usage
 
 Sbt:
 
