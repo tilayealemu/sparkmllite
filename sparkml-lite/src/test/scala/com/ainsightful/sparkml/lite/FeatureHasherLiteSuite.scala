@@ -48,7 +48,7 @@ class FeatureHasherLiteSuite extends FunSuite with MockitoSugar with BeforeAndAf
     assert(hash === hash2)
   }
 
-  test("test various data types") {
+  test("various data types") {
     val sampleSchema = StructType(Array(
       StructField("feature1", StringType, false),
       StructField("feature2", DoubleType, false),
@@ -60,7 +60,7 @@ class FeatureHasherLiteSuite extends FunSuite with MockitoSugar with BeforeAndAf
     compareHash(df, numberOfFeatures, StructType(sampleSchema.fields.tail))
   }
 
-  test("test missing value for results in error if check is enabled") {
+  test("missing value for results in error if check is enabled") {
     val sampleSchema = StructType(Array(StructField("feature1", StringType, true)))
     val feature = Map("some_other_feature" -> "value")
 
