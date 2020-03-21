@@ -34,9 +34,24 @@ class FeatureHasherLiteLRMWrapperBigDatasetSuite extends FunSuite with MockitoSu
   private val Schema = StructType(Target +: Features)
   private val PredictSchema = StructType(Features)
 
-  test("FeatureHasher and FeatureHasherLite result in the same predictions") {
-    val (model, actualPredictions) = predictWithFeatureHasher(10, Schema, Features, Target)
-    val expectedPredictions = predictWithFeatureHasherLite(model, 10)
+  test("FeatureHasher and FeatureHasherLite result in the same predictions - hash size 2^3") {
+    runTest(math.pow(2, 3).toInt, Schema, Features, Target)
+  }
+
+  test("FeatureHasher and FeatureHasherLite result in the same predictions - hash size 2^10") {
+    runTest(math.pow(2, 10).toInt, Schema, Features, Target)
+  }
+
+  test("FeatureHasher and FeatureHasherLite result in the same predictions - hash size 2^18") {
+    runTest(math.pow(2, 18).toInt, Schema, Features, Target)
+  }
+
+  private def runTest(hashSize: Int,
+                      schema: StructType,
+                      features: Array[StructField],
+                      target: StructField): Unit = {
+    val (model, actualPredictions) = predictWithFeatureHasher(hashSize, Schema, Features, Target)
+    val expectedPredictions = predictWithFeatureHasherLite(model, hashSize)
     assertArray(expectedPredictions, actualPredictions)
   }
 
